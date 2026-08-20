@@ -1,0 +1,195 @@
+.about {
+    padding: 7rem 0;
+
+    background-color: #ffffff;
+}
+
+.container {
+    width: min(1200px, 92%);
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    align-items: center;
+
+    gap: 5rem;
+}
+
+.imageSide {
+    position: relative;
+}
+
+.imageWrapper {
+    width: 100%;
+    height: 600px;
+
+    overflow: hidden;
+
+    border-radius: 8px;
+
+    background-color: #e4ebe8;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+.content {
+    max-width: 580px;
+}
+
+.eyebrow {
+    margin: 0 0 0.9rem;
+
+    color: #52796f;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.16rem;
+}
+
+.content h2 {
+    margin: 0;
+
+    color: #203b35;
+
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+}
+
+.description {
+    margin: 1.4rem 0 0;
+
+    color: #616966;
+
+    font-size: 1rem;
+
+    line-height: 1.8;
+}
+
+.highlights {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1.5rem;
+
+    margin-top: 2rem;
+}
+
+.highlight {
+    display: flex;
+
+    gap: 1rem;
+
+    align-items: flex-start;
+}
+
+.check {
+    flex-shrink: 0;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #e5efeb;
+
+    color: #52796f;
+
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.highlight h3 {
+    margin: 0 0 0.3rem;
+
+    color: #203b35;
+
+    font-size: 1rem;
+}
+
+.highlight p {
+    margin: 0;
+
+    color: #6b7470;
+
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 52px;
+
+    margin-top: 2.3rem;
+
+    padding: 0 1.6rem;
+
+    background-color: #52796f;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.button:hover {
+    background-color: #3f6158;
+
+    transform: translateY(-2px);
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+
+        gap: 3rem;
+    }
+
+    .imageWrapper {
+        height: 500px;
+    }
+
+    .content {
+        max-width: 700px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .about {
+        padding: 5rem 0;
+    }
+
+    .imageWrapper {
+        height: 400px;
+    }
+
+    .content h2 {
+        font-size: 2.4rem;
+    }
+}
