@@ -1,4 +1,6 @@
 import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+
 import styles from "./QuoteForm.module.css";
 
 type QuoteFormData = {
@@ -24,9 +26,9 @@ function QuoteForm() {
 
     const handleChange = (
         event:
-            | React.ChangeEvent<HTMLInputElement>
-            | React.ChangeEvent<HTMLSelectElement>
-            | React.ChangeEvent<HTMLTextAreaElement>
+            | ChangeEvent<HTMLInputElement>
+            | ChangeEvent<HTMLSelectElement>
+            | ChangeEvent<HTMLTextAreaElement>
     ) => {
         const { name, value } = event.target;
 
@@ -36,11 +38,33 @@ function QuoteForm() {
         }));
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
+        try {
+            const response = await fetch(
+                "http://localhost:5000/api/quotes",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
 
-        console.log("Quote request:", formData);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message || "Something went wrong submitting the quote."
+                );
+            }
+
+            console.log("Quote submitted successfully:", data);
+        } catch (error) {
+            console.error("Error submitting quote:", error);
+        }
     };
 
     return (
@@ -59,9 +83,13 @@ function QuoteForm() {
 
                 <div className={styles.quoteBox}>
                     <div className={styles.infoSide}>
-                        <p className={styles.infoEyebrow}>Cleaning With Wendy</p>
+                        <p className={styles.infoEyebrow}>
+                            Cleaning With Wendy
+                        </p>
 
-                        <h3>Let&apos;s Make Your Space Feel Fresh Again.</h3>
+                        <h3>
+                            Let&apos;s Make Your Space Feel Fresh Again.
+                        </h3>
 
                         <p>
                             Whether you need recurring cleaning, a deep clean, or help before
@@ -87,10 +115,15 @@ function QuoteForm() {
                         </div>
                     </div>
 
-                    <form className={styles.form} onSubmit={handleSubmit}>
+                    <form
+                        className={styles.form}
+                        onSubmit={handleSubmit}
+                    >
                         <div className={styles.formGrid}>
                             <div className={styles.field}>
-                                <label htmlFor="name">Name *</label>
+                                <label htmlFor="name">
+                                    Name *
+                                </label>
 
                                 <input
                                     id="name"
@@ -104,7 +137,9 @@ function QuoteForm() {
                             </div>
 
                             <div className={styles.field}>
-                                <label htmlFor="email">Email *</label>
+                                <label htmlFor="email">
+                                    Email *
+                                </label>
 
                                 <input
                                     id="email"
@@ -118,7 +153,9 @@ function QuoteForm() {
                             </div>
 
                             <div className={styles.field}>
-                                <label htmlFor="phone">Phone</label>
+                                <label htmlFor="phone">
+                                    Phone
+                                </label>
 
                                 <input
                                     id="phone"
@@ -131,7 +168,9 @@ function QuoteForm() {
                             </div>
 
                             <div className={styles.field}>
-                                <label htmlFor="service">Cleaning Service *</label>
+                                <label htmlFor="service">
+                                    Cleaning Service *
+                                </label>
 
                                 <select
                                     id="service"
@@ -140,16 +179,32 @@ function QuoteForm() {
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="">Select a service</option>
-                                    <option value="standard">Standard Cleaning</option>
-                                    <option value="deep">Deep Cleaning</option>
-                                    <option value="move">Move-In / Move-Out</option>
-                                    <option value="other">Other</option>
+                                    <option value="">
+                                        Select a service
+                                    </option>
+
+                                    <option value="standard">
+                                        Standard Cleaning
+                                    </option>
+
+                                    <option value="deep">
+                                        Deep Cleaning
+                                    </option>
+
+                                    <option value="move">
+                                        Move-In / Move-Out
+                                    </option>
+
+                                    <option value="other">
+                                        Other
+                                    </option>
                                 </select>
                             </div>
 
                             <div className={styles.field}>
-                                <label htmlFor="bedrooms">Bedrooms</label>
+                                <label htmlFor="bedrooms">
+                                    Bedrooms
+                                </label>
 
                                 <select
                                     id="bedrooms"
@@ -157,18 +212,40 @@ function QuoteForm() {
                                     value={formData.bedrooms}
                                     onChange={handleChange}
                                 >
-                                    <option value="">Select</option>
-                                    <option value="studio">Studio</option>
-                                    <option value="1">1 Bedroom</option>
-                                    <option value="2">2 Bedrooms</option>
-                                    <option value="3">3 Bedrooms</option>
-                                    <option value="4">4 Bedrooms</option>
-                                    <option value="5+">5+ Bedrooms</option>
+                                    <option value="">
+                                        Select
+                                    </option>
+
+                                    <option value="studio">
+                                        Studio
+                                    </option>
+
+                                    <option value="1">
+                                        1 Bedroom
+                                    </option>
+
+                                    <option value="2">
+                                        2 Bedrooms
+                                    </option>
+
+                                    <option value="3">
+                                        3 Bedrooms
+                                    </option>
+
+                                    <option value="4">
+                                        4 Bedrooms
+                                    </option>
+
+                                    <option value="5+">
+                                        5+ Bedrooms
+                                    </option>
                                 </select>
                             </div>
 
                             <div className={styles.field}>
-                                <label htmlFor="bathrooms">Bathrooms</label>
+                                <label htmlFor="bathrooms">
+                                    Bathrooms
+                                </label>
 
                                 <select
                                     id="bathrooms"
@@ -176,15 +253,31 @@ function QuoteForm() {
                                     value={formData.bathrooms}
                                     onChange={handleChange}
                                 >
-                                    <option value="">Select</option>
-                                    <option value="1">1 Bathroom</option>
-                                    <option value="2">2 Bathrooms</option>
-                                    <option value="3">3 Bathrooms</option>
-                                    <option value="4+">4+ Bathrooms</option>
+                                    <option value="">
+                                        Select
+                                    </option>
+
+                                    <option value="1">
+                                        1 Bathroom
+                                    </option>
+
+                                    <option value="2">
+                                        2 Bathrooms
+                                    </option>
+
+                                    <option value="3">
+                                        3 Bathrooms
+                                    </option>
+
+                                    <option value="4+">
+                                        4+ Bathrooms
+                                    </option>
                                 </select>
                             </div>
 
-                            <div className={`${styles.field} ${styles.fullWidth}`}>
+                            <div
+                                className={`${styles.field} ${styles.fullWidth}`}
+                            >
                                 <label htmlFor="message">
                                     Anything else we should know?
                                 </label>
@@ -200,7 +293,10 @@ function QuoteForm() {
                             </div>
                         </div>
 
-                        <button type="submit" className={styles.submitButton}>
+                        <button
+                            type="submit"
+                            className={styles.submitButton}
+                        >
                             Request My Quote
                         </button>
 
