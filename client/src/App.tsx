@@ -5,6 +5,7 @@ import About from "./components/About/About";
 import WhyChooseUs from "./components/WhyChooseUs/WhyChooseUs";
 import Testimonials from "./components/Testimonials/Testimonials";
 import QuoteForm from "./components/QuoteForm/QuoteForm";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Testimonials />
         <QuoteForm />
       </main>
+
+      <Footer />
     </>
   );
 }

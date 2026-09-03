@@ -1,0 +1,161 @@
+.footer {
+    padding: 5rem 0 2rem;
+
+    background-color: #172d28;
+
+    color: #ffffff;
+}
+
+.container {
+    width: min(1200px, 92%);
+    margin: 0 auto;
+}
+
+.main {
+    display: grid;
+
+    grid-template-columns: 2fr 1fr 1.2fr 1.2fr;
+
+    gap: 3rem;
+
+    padding-bottom: 4rem;
+}
+
+.brand {
+    max-width: 390px;
+}
+
+.logo {
+    display: inline-block;
+
+    margin-bottom: 1.2rem;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 1.35rem;
+    font-weight: 800;
+
+    letter-spacing: 0.04rem;
+}
+
+.brand p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    line-height: 1.8;
+
+    font-size: 0.9rem;
+}
+
+.column h3 {
+    margin: 0 0 1.3rem;
+
+    color: #ffffff;
+
+    font-size: 0.85rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.8rem;
+}
+
+.links a {
+    width: fit-content;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+
+    transition: color 0.2s ease;
+}
+
+.links a:hover {
+    color: #ffffff;
+}
+
+.contact {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+.contact p {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.25rem;
+
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.7);
+
+    font-size: 0.9rem;
+}
+
+.contact span {
+    color: #a9c9be;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+}
+
+.bottom {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 2rem;
+
+    padding-top: 2rem;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bottom p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.45);
+
+    font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+    .main {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer {
+        padding-top: 4rem;
+    }
+
+    .main {
+        grid-template-columns: 1fr;
+
+        gap: 2.5rem;
+    }
+
+    .bottom {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+}
