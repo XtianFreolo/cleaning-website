@@ -34,7 +34,7 @@ export const createQuote = async (
     }
 
     try {
-        // Save the quote request to PostgreSQL / Neon
+
         const result = await pool.query(
             `
             INSERT INTO quotes (
@@ -62,12 +62,7 @@ export const createQuote = async (
 
         const createdQuote = result.rows[0];
 
-        /*
-          The quote is already safely stored in Neon.
 
-          Now we try to send Wendy an email notification.
-          If the email fails, we still keep the quote.
-        */
         try {
             await sendNewQuoteEmail({
                 name: createdQuote.name,
