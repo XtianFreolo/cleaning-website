@@ -12,7 +12,6 @@ type QuoteRequestBody = {
     message?: string;
 };
 
-
 export const createQuote = async (
     req: Request<{}, {}, QuoteRequestBody>,
     res: Response
@@ -27,16 +26,15 @@ export const createQuote = async (
         message,
     } = req.body;
 
-
+    // Required fields
     if (!name || !email || !service) {
         return res.status(400).json({
             message: "Name, email, and service are required.",
         });
     }
 
-
     try {
-
+        // Save the quote request to PostgreSQL / Neon
         const result = await pool.query(
             `
             INSERT INTO quotes (
@@ -62,9 +60,14 @@ export const createQuote = async (
             ]
         );
 
-
         const createdQuote = result.rows[0];
 
+        /*
+          The quote is already safely stored in Neon.
+
+          Now we try to send Wendy an email notification.
+          If the email fails, we still keep the quote.
+        */
         try {
             await sendNewQuoteEmail({
                 name: createdQuote.name,
@@ -75,17 +78,23 @@ export const createQuote = async (
                 bathrooms: createdQuote.bathrooms,
                 message: createdQuote.message,
             });
-
         } catch (emailError) {
-
             console.error(
                 "Quote saved, but email notification failed:",
                 emailError
             );
         }
 
-
         return res.status(201).json({
             message: "Quote request received successfully.",
             quote: createdQuote,
         });
+
+    } catch (error) {
+        console.error("Error creating quote:", error);
+
+        return res.status(500).json({
+            message: "Unable to submit quote request.",
+        });
+    }
+};
