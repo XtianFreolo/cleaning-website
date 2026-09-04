@@ -301,3 +301,28 @@
         padding: 2rem 1.4rem;
     }
 }
+
+.submitButton:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.successMessage {
+    margin: 1rem 0 0;
+    padding: 0.9rem 1rem;
+    border-radius: 6px;
+    background-color: #edf7f2;
+    color: #214b3f;
+    font-weight: 600;
+    text-align: center;
+}
+
+.errorMessage {
+    margin: 1rem 0 0;
+    padding: 0.9rem 1rem;
+    border-radius: 6px;
+    background-color: #fff0f0;
+    color: #8b2525;
+    font-weight: 600;
+    text-align: center;
+}

@@ -13,7 +13,10 @@ type QuoteFormData = {
     message: string;
 };
 
+type SubmitStatus = "idle" | "submitting" | "success" | "error";
+
 function QuoteForm() {
+    // Stores everything the customer types/selects in the form.
     const [formData, setFormData] = useState<QuoteFormData>({
         name: "",
         email: "",
@@ -23,6 +26,13 @@ function QuoteForm() {
         bathrooms: "",
         message: "",
     });
+
+    // Keeps track of what the form is currently doing.
+    const [submitStatus, setSubmitStatus] =
+        useState<SubmitStatus>("idle");
+
+    // Stores the message we want to show underneath the button.
+    const [submitMessage, setSubmitMessage] = useState("");
 
     const handleChange = (
         event:
@@ -36,34 +46,82 @@ function QuoteForm() {
             ...previousData,
             [name]: value,
         }));
+
+        // If the customer starts filling out another quote after
+        // previously submitting one, remove the old success/error message.
+        if (submitStatus === "success" || submitStatus === "error") {
+            setSubmitStatus("idle");
+            setSubmitMessage("");
+        }
     };
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        // Prevent the browser from refreshing when the form is submitted.
         event.preventDefault();
 
+        // Immediately change the button to "Sending..."
+        setSubmitStatus("submitting");
+        setSubmitMessage("");
+
         try {
+            // Send the quote information to our Express backend.
             const response = await fetch(
                 "http://localhost:5000/api/quotes",
                 {
                     method: "POST",
+
                     headers: {
                         "Content-Type": "application/json",
                     },
+
                     body: JSON.stringify(formData),
                 }
             );
 
+            // Convert the JSON response from Express into JavaScript.
             const data = await response.json();
 
+            // fetch() does not automatically throw an error for
+            // HTTP errors such as 400 or 500, so we check manually.
             if (!response.ok) {
                 throw new Error(
-                    data.message || "Something went wrong submitting the quote."
+                    data.message ||
+                    "Something went wrong while submitting your quote."
                 );
             }
 
             console.log("Quote submitted successfully:", data);
+
+            // Tell React that the submission succeeded.
+            setSubmitStatus("success");
+
+            setSubmitMessage(
+                "Thank you! We received your quote request and will be in touch soon."
+            );
+
+            // Clear the form after a successful submission.
+            setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                service: "",
+                bedrooms: "",
+                bathrooms: "",
+                message: "",
+            });
         } catch (error) {
             console.error("Error submitting quote:", error);
+
+            // Tell React that something went wrong.
+            setSubmitStatus("error");
+
+            if (error instanceof Error) {
+                setSubmitMessage(error.message);
+            } else {
+                setSubmitMessage(
+                    "We couldn't submit your quote right now. Please try again."
+                );
+            }
         }
     };
 
@@ -296,9 +354,31 @@ function QuoteForm() {
                         <button
                             type="submit"
                             className={styles.submitButton}
+                            disabled={submitStatus === "submitting"}
                         >
-                            Request My Quote
+                            {submitStatus === "submitting"
+                                ? "Sending..."
+                                : "Request My Quote"}
                         </button>
+
+                        {submitStatus === "success" && (
+                            <p
+                                className={styles.successMessage}
+                                role="status"
+                                aria-live="polite"
+                            >
+                                {submitMessage}
+                            </p>
+                        )}
+
+                        {submitStatus === "error" && (
+                            <p
+                                className={styles.errorMessage}
+                                role="alert"
+                            >
+                                {submitMessage}
+                            </p>
+                        )}
 
                         <p className={styles.formNote}>
                             We&apos;ll only use your information to respond to your cleaning
