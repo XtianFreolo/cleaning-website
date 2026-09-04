@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import pool from "../db/pool";
-
+import { sendNewQuoteEmail } from "../services/emailService";
 
 type QuoteRequestBody = {
     name: string;
@@ -65,19 +65,27 @@ export const createQuote = async (
 
         const createdQuote = result.rows[0];
 
+        try {
+            await sendNewQuoteEmail({
+                name: createdQuote.name,
+                email: createdQuote.email,
+                phone: createdQuote.phone,
+                serviceType: createdQuote.service_type,
+                bedrooms: createdQuote.bedrooms,
+                bathrooms: createdQuote.bathrooms,
+                message: createdQuote.message,
+            });
+
+        } catch (emailError) {
+
+            console.error(
+                "Quote saved, but email notification failed:",
+                emailError
+            );
+        }
+
 
         return res.status(201).json({
             message: "Quote request received successfully.",
             quote: createdQuote,
         });
-
-    } catch (error) {
-
-        console.error("Error creating quote:", error);
-
-
-        return res.status(500).json({
-            message: "Unable to submit quote request.",
-        });
-    }
-};
