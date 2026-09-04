@@ -1,6 +1,8 @@
+import "dotenv/config";
+import { env } from "node:process";
 import { Resend } from "resend";
 
-const resendApiKey = process.env.RESEND_API_KEY;
+const resendApiKey = env.RESEND_API_KEY;
 
 if (!resendApiKey) {
     throw new Error(
@@ -9,6 +11,7 @@ if (!resendApiKey) {
 }
 
 const resend = new Resend(resendApiKey);
+
 type QuoteEmailData = {
     name: string;
     email: string;
@@ -19,14 +22,21 @@ type QuoteEmailData = {
     message?: string | null;
 };
 
+const escapeHtml = (value?: string | null) =>
+    (value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
 export const sendNewQuoteEmail = async (
     quote: QuoteEmailData
 ) => {
+    const wendyEmail = env.WENDY_EMAIL;
 
-    const wendyEmail = process.env.WENDY_EMAIL;
     const fromEmail =
-        process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
-
+        env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 
     if (!wendyEmail) {
         throw new Error(
@@ -34,15 +44,10 @@ export const sendNewQuoteEmail = async (
         );
     }
 
-
     const result = await resend.emails.send({
         from: `Cleaning With Wendy <${fromEmail}>`,
-
         to: [wendyEmail],
-
         subject: `New Cleaning Quote Request - ${quote.name}`,
-
-
         replyTo: quote.email,
 
         html: `
@@ -57,37 +62,37 @@ export const sendNewQuoteEmail = async (
 
             <p>
                 <strong>Name:</strong>
-                ${quote.name}
+                ${escapeHtml(quote.name)}
             </p>
 
             <p>
                 <strong>Email:</strong>
-                ${quote.email}
+                ${escapeHtml(quote.email)}
             </p>
 
             <p>
                 <strong>Phone:</strong>
-                ${quote.phone || "Not provided"}
+                ${escapeHtml(quote.phone) || "Not provided"}
             </p>
 
             <p>
                 <strong>Service:</strong>
-                ${quote.serviceType}
+                ${escapeHtml(quote.serviceType)}
             </p>
 
             <p>
                 <strong>Bedrooms:</strong>
-                ${quote.bedrooms || "Not provided"}
+                ${escapeHtml(quote.bedrooms) || "Not provided"}
             </p>
 
             <p>
                 <strong>Bathrooms:</strong>
-                ${quote.bathrooms || "Not provided"}
+                ${escapeHtml(quote.bathrooms) || "Not provided"}
             </p>
 
             <p>
                 <strong>Message:</strong>
-                ${quote.message || "No message provided"}
+                ${escapeHtml(quote.message) || "No message provided"}
             </p>
 
             <hr />
@@ -98,6 +103,12 @@ export const sendNewQuoteEmail = async (
             </p>
         `,
     });
+
+    if (result.error) {
+        throw new Error(
+            `Resend email failed: ${result.error.message}`
+        );
+    }
 
     return result;
 };
