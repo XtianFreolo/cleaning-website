@@ -1,4 +1,6 @@
 import type { Request, Response } from "express";
+import pool from "../db/pool";
+
 
 type QuoteRequestBody = {
     name: string;
@@ -10,7 +12,8 @@ type QuoteRequestBody = {
     message?: string;
 };
 
-export const createQuote = (
+
+export const createQuote = async (
     req: Request<{}, {}, QuoteRequestBody>,
     res: Response
 ) => {
@@ -31,28 +34,50 @@ export const createQuote = (
         });
     }
 
-    const quoteRequest = {
-        name,
-        email,
-        phone,
-        service,
-        bedrooms,
-        bathrooms,
-        message,
-    };
 
-    /*
-      Temporary development step.
-  
-      Later:
-      - save this to PostgreSQL
-      - send Wendy an email
-      - possibly send the customer a confirmation email
-    */
-    console.log("New quote request:", quoteRequest);
+    try {
 
-    return res.status(201).json({
-        message: "Quote request received successfully.",
-        quote: quoteRequest,
-    });
+        const result = await pool.query(
+            `
+            INSERT INTO quotes (
+                name,
+                email,
+                phone,
+                service_type,
+                bedrooms,
+                bathrooms,
+                message
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING *;
+            `,
+            [
+                name,
+                email,
+                phone || null,
+                service,
+                bedrooms || null,
+                bathrooms || null,
+                message || null,
+            ]
+        );
+
+
+        const createdQuote = result.rows[0];
+
+
+        return res.status(201).json({
+            message: "Quote request received successfully.",
+            quote: createdQuote,
+        });
+
+    } catch (error) {
+
+        console.error("Error creating quote:", error);
+
+
+        return res.status(500).json({
+            message: "Unable to submit quote request.",
+        });
+    }
 };
