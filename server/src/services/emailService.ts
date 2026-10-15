@@ -1,4 +1,5 @@
 import "dotenv/config";
+
 import { env } from "node:process";
 import { Resend } from "resend";
 
@@ -6,7 +7,7 @@ const resendApiKey = env.RESEND_API_KEY;
 
 if (!resendApiKey) {
     throw new Error(
-        "RESEND_API_KEY is missing. Check the server/.env file."
+        "RESEND_API_KEY is missing. Check server/.env."
     );
 }
 
@@ -16,10 +17,7 @@ type QuoteEmailData = {
     name: string;
     email: string;
     phone?: string | null;
-    serviceType: string;
-    bedrooms?: string | null;
-    bathrooms?: string | null;
-    message?: string | null;
+    message: string;
 };
 
 const escapeHtml = (value?: string | null) =>
@@ -40,25 +38,29 @@ export const sendNewQuoteEmail = async (
 
     if (!wendyEmail) {
         throw new Error(
-            "WENDY_EMAIL is missing. Check the server/.env file."
+            "WENDY_EMAIL is missing. Check server/.env."
         );
     }
 
     const result = await resend.emails.send({
         from: `Cleaning With Wendy <${fromEmail}>`,
+
         to: [wendyEmail],
-        subject: `New Cleaning Quote Request - ${quote.name}`,
+
+        subject: `New Cleaning Request - ${quote.name}`,
+
+   
         replyTo: quote.email,
 
         html: `
-            <h2>New Cleaning Quote Request</h2>
+            <h2>New Cleaning Request</h2>
 
             <p>
-                A customer submitted a new quote request
-                through the Cleaning With Wendy website.
+                Someone submitted a request through
+                the Cleaning With Wendy website.
             </p>
 
-            <hr />
+            <hr>
 
             <p>
                 <strong>Name:</strong>
@@ -75,31 +77,17 @@ export const sendNewQuoteEmail = async (
                 ${escapeHtml(quote.phone) || "Not provided"}
             </p>
 
+            <h3>What they need:</h3>
+
             <p>
-                <strong>Service:</strong>
-                ${escapeHtml(quote.serviceType)}
+                ${escapeHtml(quote.message).replace(/\n/g, "<br>")}
             </p>
 
-            <p>
-                <strong>Bedrooms:</strong>
-                ${escapeHtml(quote.bedrooms) || "Not provided"}
-            </p>
+            <hr>
 
             <p>
-                <strong>Bathrooms:</strong>
-                ${escapeHtml(quote.bathrooms) || "Not provided"}
-            </p>
-
-            <p>
-                <strong>Message:</strong>
-                ${escapeHtml(quote.message) || "No message provided"}
-            </p>
-
-            <hr />
-
-            <p>
-                This quote request was submitted through
-                Cleaning With Wendy.
+                Simply click <strong>Reply</strong>
+                to respond directly to this customer.
             </p>
         `,
     });

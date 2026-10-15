@@ -3,68 +3,74 @@ import type { ChangeEvent, FormEvent } from "react";
 
 import styles from "./QuoteForm.module.css";
 
+
 type QuoteFormData = {
     name: string;
     email: string;
     phone: string;
-    service: string;
-    bedrooms: string;
-    bathrooms: string;
     message: string;
 };
 
-type SubmitStatus = "idle" | "submitting" | "success" | "error";
+
+type SubmitStatus =
+    | "idle"
+    | "submitting"
+    | "success"
+    | "error";
+
 
 function QuoteForm() {
-    // Stores everything the customer types/selects in the form.
     const [formData, setFormData] = useState<QuoteFormData>({
         name: "",
         email: "",
         phone: "",
-        service: "",
-        bedrooms: "",
-        bathrooms: "",
         message: "",
     });
 
-    // Keeps track of what the form is currently doing.
+
     const [submitStatus, setSubmitStatus] =
         useState<SubmitStatus>("idle");
 
-    // Stores the message we want to show underneath the button.
-    const [submitMessage, setSubmitMessage] = useState("");
+
+    const [submitMessage, setSubmitMessage] =
+        useState("");
+
 
     const handleChange = (
         event:
             | ChangeEvent<HTMLInputElement>
-            | ChangeEvent<HTMLSelectElement>
             | ChangeEvent<HTMLTextAreaElement>
     ) => {
         const { name, value } = event.target;
+
 
         setFormData((previousData) => ({
             ...previousData,
             [name]: value,
         }));
 
-        // If the customer starts filling out another quote after
-        // previously submitting one, remove the old success/error message.
-        if (submitStatus === "success" || submitStatus === "error") {
+
+        if (
+            submitStatus === "success" ||
+            submitStatus === "error"
+        ) {
             setSubmitStatus("idle");
             setSubmitMessage("");
         }
     };
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        // Prevent the browser from refreshing when the form is submitted.
+
+    const handleSubmit = async (
+        event: FormEvent<HTMLFormElement>
+    ) => {
         event.preventDefault();
 
-        // Immediately change the button to "Sending..."
+
         setSubmitStatus("submitting");
         setSubmitMessage("");
 
+
         try {
-            // Send the quote information to our Express backend.
             const response = await fetch(
                 "http://localhost:5000/api/quotes",
                 {
@@ -74,110 +80,140 @@ function QuoteForm() {
                         "Content-Type": "application/json",
                     },
 
-                    body: JSON.stringify(formData),
+                    body: JSON.stringify({
+                        name: formData.name,
+                        email: formData.email,
+                        phone: formData.phone,
+                        message: formData.message,
+                    }),
                 }
             );
 
-            // Convert the JSON response from Express into JavaScript.
+
             const data = await response.json();
 
-            // fetch() does not automatically throw an error for
-            // HTTP errors such as 400 or 500, so we check manually.
+
             if (!response.ok) {
                 throw new Error(
                     data.message ||
-                    "Something went wrong while submitting your quote."
+                        "Something went wrong while sending your request."
                 );
             }
 
-            console.log("Quote submitted successfully:", data);
 
-            // Tell React that the submission succeeded.
             setSubmitStatus("success");
 
             setSubmitMessage(
-                "Thank you! We received your quote request and will be in touch soon."
+                "Thank you! Wendy received your request and will be in touch soon."
             );
 
-            // Clear the form after a successful submission.
+
             setFormData({
                 name: "",
                 email: "",
                 phone: "",
-                service: "",
-                bedrooms: "",
-                bathrooms: "",
                 message: "",
             });
-        } catch (error) {
-            console.error("Error submitting quote:", error);
 
-            // Tell React that something went wrong.
+        } catch (error) {
+            console.error(
+                "Error submitting cleaning request:",
+                error
+            );
+
+
             setSubmitStatus("error");
+
 
             if (error instanceof Error) {
                 setSubmitMessage(error.message);
             } else {
                 setSubmitMessage(
-                    "We couldn't submit your quote right now. Please try again."
+                    "We couldn't send your request right now. Please try again."
                 );
             }
         }
     };
 
-    return (
-        <section id="quote" className={styles.quoteSection}>
-            <div className={styles.container}>
-                <div className={styles.heading}>
-                    <p className={styles.eyebrow}>Request a Quote</p>
 
-                    <h2>Ready for a Cleaner Home?</h2>
+    return (
+        <section
+            id="quote"
+            className={styles.quoteSection}
+        >
+            <div className={styles.container}>
+
+                <div className={styles.heading}>
+                    <p className={styles.eyebrow}>
+                        Get a Free Quote
+                    </p>
+
+                    <h2>
+                        Tell Wendy What You Need
+                    </h2>
 
                     <p>
-                        Tell us a little about your home and the type of cleaning you need.
-                        Cleaning With Wendy will get back to you with more information.
+                        Send us a few details about the cleaning
+                        you&apos;re looking for and Wendy will
+                        contact you directly.
                     </p>
                 </div>
 
+
                 <div className={styles.quoteBox}>
+
                     <div className={styles.infoSide}>
+
                         <p className={styles.infoEyebrow}>
                             Cleaning With Wendy
                         </p>
 
                         <h3>
-                            Let&apos;s Make Your Space Feel Fresh Again.
+                            A Cleaner Space Starts Here.
                         </h3>
 
                         <p>
-                            Whether you need recurring cleaning, a deep clean, or help before
-                            or after a move, tell us what you need and we&apos;ll help you get
-                            started.
+                            Tell Wendy what you need and she&apos;ll
+                            follow up with you personally to discuss
+                            your cleaning and quote.
                         </p>
 
+
                         <div className={styles.infoList}>
+
                             <div>
                                 <span>01</span>
-                                <p>Tell us about your home.</p>
+                                <p>
+                                    Tell us how to reach you.
+                                </p>
                             </div>
 
                             <div>
                                 <span>02</span>
-                                <p>Choose the cleaning service you need.</p>
+                                <p>
+                                    Describe the cleaning you need.
+                                </p>
                             </div>
 
                             <div>
                                 <span>03</span>
-                                <p>We&apos;ll follow up about your quote.</p>
+                                <p>
+                                    Wendy will contact you directly.
+                                </p>
                             </div>
+
                         </div>
+
                     </div>
+
 
                     <form
                         className={styles.form}
                         onSubmit={handleSubmit}
                     >
+
                         <div className={styles.formGrid}>
+
                             <div className={styles.field}>
                                 <label htmlFor="name">
                                     Name *
@@ -193,6 +229,7 @@ function QuoteForm() {
                                     required
                                 />
                             </div>
+
 
                             <div className={styles.field}>
                                 <label htmlFor="email">
@@ -210,7 +247,10 @@ function QuoteForm() {
                                 />
                             </div>
 
-                            <div className={styles.field}>
+
+                            <div
+                                className={`${styles.field} ${styles.fullWidth}`}
+                            >
                                 <label htmlFor="phone">
                                     Phone
                                 </label>
@@ -225,141 +265,40 @@ function QuoteForm() {
                                 />
                             </div>
 
-                            <div className={styles.field}>
-                                <label htmlFor="service">
-                                    Cleaning Service *
-                                </label>
-
-                                <select
-                                    id="service"
-                                    name="service"
-                                    value={formData.service}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="">
-                                        Select a service
-                                    </option>
-
-                                    <option value="standard">
-                                        Standard Cleaning
-                                    </option>
-
-                                    <option value="deep">
-                                        Deep Cleaning
-                                    </option>
-
-                                    <option value="move">
-                                        Move-In / Move-Out
-                                    </option>
-
-                                    <option value="other">
-                                        Other
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div className={styles.field}>
-                                <label htmlFor="bedrooms">
-                                    Bedrooms
-                                </label>
-
-                                <select
-                                    id="bedrooms"
-                                    name="bedrooms"
-                                    value={formData.bedrooms}
-                                    onChange={handleChange}
-                                >
-                                    <option value="">
-                                        Select
-                                    </option>
-
-                                    <option value="studio">
-                                        Studio
-                                    </option>
-
-                                    <option value="1">
-                                        1 Bedroom
-                                    </option>
-
-                                    <option value="2">
-                                        2 Bedrooms
-                                    </option>
-
-                                    <option value="3">
-                                        3 Bedrooms
-                                    </option>
-
-                                    <option value="4">
-                                        4 Bedrooms
-                                    </option>
-
-                                    <option value="5+">
-                                        5+ Bedrooms
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div className={styles.field}>
-                                <label htmlFor="bathrooms">
-                                    Bathrooms
-                                </label>
-
-                                <select
-                                    id="bathrooms"
-                                    name="bathrooms"
-                                    value={formData.bathrooms}
-                                    onChange={handleChange}
-                                >
-                                    <option value="">
-                                        Select
-                                    </option>
-
-                                    <option value="1">
-                                        1 Bathroom
-                                    </option>
-
-                                    <option value="2">
-                                        2 Bathrooms
-                                    </option>
-
-                                    <option value="3">
-                                        3 Bathrooms
-                                    </option>
-
-                                    <option value="4+">
-                                        4+ Bathrooms
-                                    </option>
-                                </select>
-                            </div>
 
                             <div
                                 className={`${styles.field} ${styles.fullWidth}`}
                             >
                                 <label htmlFor="message">
-                                    Anything else we should know?
+                                    Tell Wendy what you need *
                                 </label>
 
                                 <textarea
                                     id="message"
                                     name="message"
-                                    rows={5}
-                                    placeholder="Tell us about your space, schedule, or any areas that need extra attention..."
+                                    rows={6}
+                                    placeholder="For example: I have a 3-bedroom townhouse and I'm interested in biweekly cleaning. I'd like help with the kitchen, bathrooms, floors, and general cleaning."
                                     value={formData.message}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
+
                         </div>
+
 
                         <button
                             type="submit"
                             className={styles.submitButton}
-                            disabled={submitStatus === "submitting"}
+                            disabled={
+                                submitStatus === "submitting"
+                            }
                         >
                             {submitStatus === "submitting"
                                 ? "Sending..."
-                                : "Request My Quote"}
+                                : "Request a Quote"}
                         </button>
+
 
                         {submitStatus === "success" && (
                             <p
@@ -371,6 +310,7 @@ function QuoteForm() {
                             </p>
                         )}
 
+
                         {submitStatus === "error" && (
                             <p
                                 className={styles.errorMessage}
@@ -380,15 +320,20 @@ function QuoteForm() {
                             </p>
                         )}
 
+
                         <p className={styles.formNote}>
-                            We&apos;ll only use your information to respond to your cleaning
-                            request.
+                            We&apos;ll only use your information
+                            to respond to your cleaning request.
                         </p>
+
                     </form>
+
                 </div>
+
             </div>
         </section>
     );
 }
+
 
 export default QuoteForm;
