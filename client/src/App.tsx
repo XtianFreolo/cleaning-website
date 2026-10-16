@@ -13,7 +13,7 @@ function App() {
       <Navbar />
 
       <main>
-        <Hero />
+        <Hero /
         <Services />
         <About />
         <WhyChooseUs />
