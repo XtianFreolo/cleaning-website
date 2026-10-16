@@ -72,7 +72,7 @@ function QuoteForm() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/quotes",
+                "/api/send-quote",
                 {
                     method: "POST",
 
