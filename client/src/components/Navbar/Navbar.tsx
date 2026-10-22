@@ -4,12 +4,12 @@ function Navbar() {
     return (
         <header className={styles.header}>
             <nav className={styles.navbar}>
-                {/* 
+        {/* 
           Temporary business name.
           Later we can replace this text with your actual logo image.
         */}
                 <a href="/" className={styles.logo}>
-                    WENDY CLEANING KOMPANY
+                    WENDY'S PREMIUM SERVICES
                 </a>
 
                 {/* Main navigation */}
