@@ -22,7 +22,7 @@ const services: Service[] = [
     {
         title: "Move-In / Move-Out",
         description:
-            "Thorough cleaning for empty homes, apartments, and properties before or after a move.",
+            "Save time and energy by letting us handle the cleaning before or after your move, so you can focus on settling in.",
         image: "/images/move-cleaning.jpg",
     },
 ];

@@ -27,7 +27,7 @@ function About() {
                     </p>
 
                     <p className={styles.description}>
-                        We provide dependable residential cleaning with a focus on
+                        We provide dependableresidential cleaning with a focus on
                         consistency, attention to detail, and making every space feel
                         fresh, comfortable, and welcoming.
                     </p>
@@ -51,8 +51,7 @@ function About() {
                             <div>
                                 <h3>Attention to Detail</h3>
                                 <p>
-                                    We focus on the small things that help make your entire
-                                    home feel cleaner.
+                                    We focus on the small things that make a big difference in your home.
                                 </p>
                             </div>
                         </div>

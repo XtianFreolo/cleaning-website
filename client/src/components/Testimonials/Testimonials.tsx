@@ -9,21 +9,9 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
     {
         quote:
-            "Wendy is dependable, thorough, and always leaves our home feeling fresh and comfortable.",
-        name: "Client Name",
-        location: "Maryland",
-    },
-    {
-        quote:
-            "The attention to detail is what stands out the most. Everything feels noticeably cleaner after every visit.",
-        name: "Client Name",
-        location: "Washington, DC",
-    },
-    {
-        quote:
-            "Professional, friendly, and easy to work with. I would absolutely recommend Cleaning With Wendy.",
-        name: "Client Name",
-        location: "Northern Virginia",
+            "Wendy is dependable, consistent and thorough. She is a pleasure to work with and I highly recommend her services.",
+        name: "Rockville Brews",
+        location: "Twinbrook, MD",
     },
 ];
 

@@ -13,8 +13,7 @@ function Footer() {
                         </a>
 
                         <p>
-                            Reliable, detailed cleaning services designed to make your home
-                            feel fresh, comfortable, and cared for.
+                            Reliable, consistent cleaning service designed to give you time and a peace of mind.
                         </p>
                     </div>
 
@@ -45,17 +44,17 @@ function Footer() {
                         <div className={styles.contact}>
                             <p>
                                 <span>Phone</span>
-                                Coming Soon
+                                352-213-1926
                             </p>
 
                             <p>
                                 <span>Email</span>
-                                Coming Soon
+                                WePremiumService@yahoo.com
                             </p>
 
                             <p>
                                 <span>Service Area</span>
-                                DMV Area
+                                D.M.V.
                             </p>
                         </div>
                     </div>
