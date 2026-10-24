@@ -7,8 +7,8 @@ function About() {
                 <div className={styles.imageSide}>
                     <div className={styles.imageWrapper}>
                         <img
-                            src="/images/wendy-about.jpg"
-                            alt="Wendy from Cleaning With Wendy"
+                            src="/images/wendy.jpg"
+                            alt="Wendy, owner of Wendy's Premium Services"
                             className={styles.image}
                         />
                     </div>
@@ -22,12 +22,13 @@ function About() {
                     </h2>
 
                     <p className={styles.description}>
-                        Cleaning With Wendy is built around a simple idea: your home
-                        deserves the same attention and care that we would give our own.
+                        Wendy&apos;s Premium Services is built around a simple idea:
+                        your home deserves the same attention and care that we would
+                        give our own.
                     </p>
 
                     <p className={styles.description}>
-                        We provide dependableresidential cleaning with a focus on
+                        We provide dependable residential cleaning with a focus on
                         consistency, attention to detail, and making every space feel
                         fresh, comfortable, and welcoming.
                     </p>
@@ -39,8 +40,8 @@ function About() {
                             <div>
                                 <h3>Personal Service</h3>
                                 <p>
-                                    Every home is different, so we take the time to understand
-                                    what matters most to you.
+                                    Every home is different, so we take the time to
+                                    understand what matters most to you.
                                 </p>
                             </div>
                         </div>
@@ -51,7 +52,8 @@ function About() {
                             <div>
                                 <h3>Attention to Detail</h3>
                                 <p>
-                                    We focus on the small things that make a big difference in your home.
+                                    We focus on the small things that make a big
+                                    difference in your home.
                                 </p>
                             </div>
                         </div>
@@ -62,8 +64,8 @@ function About() {
                             <div>
                                 <h3>Reliable & Dependable</h3>
                                 <p>
-                                    Clear communication and consistent service are part of
-                                    every visit.
+                                    Clear communication and consistent service are
+                                    part of every visit.
                                 </p>
                             </div>
                         </div>

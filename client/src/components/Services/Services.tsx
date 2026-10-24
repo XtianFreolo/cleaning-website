@@ -11,19 +11,20 @@ const services: Service[] = [
         title: "Standard Cleaning",
         description:
             "Reliable routine cleaning to keep your home fresh, comfortable, and ready for everyday life.",
-        image: "/images/standard-cleaning.jpg",
+        image: "/images/cleaning-1.jpg",
     },
     {
         title: "Deep Cleaning",
         description:
             "A detailed top-to-bottom clean for spaces that need a little extra care and attention.",
-        image: "/images/deep-cleaning.jpg",
+        image: "/images/cleaning-2.jpg",
     },
     {
+
         title: "Move-In / Move-Out",
         description:
             "Save time and energy by letting us handle the cleaning before or after your move, so you can focus on settling in.",
-        image: "/images/move-cleaning.jpg",
+        image: "/images/cleaning-3.jpg",
     },
 ];
 
@@ -37,7 +38,7 @@ function Services() {
                     <h2>Cleaning Services Made for Your Home</h2>
 
                     <p className={styles.intro}>
-                        Cleaning With Wendy provides dependable, detailed cleaning
+                        Wendy's Premium Services provides dependable, detailed cleaning
                         services designed around your space and your schedule.
                     </p>
                 </div>
